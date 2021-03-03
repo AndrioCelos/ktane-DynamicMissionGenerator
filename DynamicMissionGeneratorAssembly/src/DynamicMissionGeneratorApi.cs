@@ -13,8 +13,6 @@ namespace DynamicMissionGeneratorAssembly
 
 		public void Awake() => Instance = this;
 
-		public ReadOnlyCollection<ReadOnlyCollection<string>> ModuleProfiles;
-
 		public object this[string key]
 		{
 			get { if (key == nameof(ModuleProfiles)) return ModuleProfiles; throw new KeyNotFoundException(); }

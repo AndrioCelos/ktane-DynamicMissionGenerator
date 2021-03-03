@@ -653,7 +653,6 @@ namespace DynamicMissionGeneratorAssembly
 		{
 			messages = new List<string>();
 
-			var moduleProfiles = new List<ReadOnlyCollection<string>>();
 			var currentBombModuleProfiles = new List<string>();
 			var matches = tokenRegex.Matches(text);
 
@@ -694,7 +693,6 @@ namespace DynamicMissionGeneratorAssembly
 				if (!widgetCountSpecified && defaultWidgetCount.HasValue) currentBomb.OptionalWidgetCount = defaultWidgetCount.Value;
 				if (currentBomb.GetComponentCount() > GetMaxModules())
 					messages.Add($"Too many modules for any bomb casing ({currentBomb.GetComponentCount()} > {GetMaxModules()})" + (bombs != null ? $" on bomb {bombs.Count + 1}" : ""));
-				moduleProfiles.Add(currentBombModuleProfiles.AsReadOnly());
 			}
 
 			foreach (Match match in matches)
@@ -996,7 +994,6 @@ namespace DynamicMissionGeneratorAssembly
 				mission.GeneratorSetting.ComponentPools.Add(new KMComponentPool() { Count = factoryMode.Value, ModTypes = new List<string>() { "Factory Mode" } });
 			messages = null;
 			mission.DisplayName = "Custom Freeplay";
-			DynamicMissionGeneratorApi.Instance.ModuleProfiles = moduleProfiles.AsReadOnly();
 			return true;
 		}
 
