@@ -23,6 +23,9 @@ namespace DynamicMissionGeneratorAssembly
 		public static IDictionary<string, object> ModSelectorApi;
 		public static DynamicMissionGenerator Instance;
 		public static string MissionsFolder => Path.Combine(Application.persistentDataPath, "DMGMissions");
+
+		internal int? prevRuleSeed;
+
 		private void Start()
 		{
 			Instance = this;
@@ -32,7 +35,17 @@ namespace DynamicMissionGeneratorAssembly
 			Directory.CreateDirectory(MissionsFolder);
 			GetComponent<KMGameInfo>().OnStateChange += state =>
 			{
-				if (state == KMGameInfo.State.Setup) DynamicMissionGeneratorApi.Instance.ModuleProfiles = null;
+				if (state == KMGameInfo.State.Setup)
+				{
+					DynamicMissionGeneratorApi.Instance.ModuleProfiles = null;
+					if (prevRuleSeed.HasValue)
+					{
+						var obj = GameObject.Find("VanillaRuleModifierProperties");
+						var dic = obj?.GetComponent<IDictionary<string, object>>();
+						if (dic != null) dic["RuleSeed"] = new object[] { prevRuleSeed, true };
+						prevRuleSeed = null;
+					}
+				}
 			};
 		}
 
