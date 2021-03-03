@@ -50,7 +50,7 @@ namespace DynamicMissionGeneratorAssembly
 				(?<Close>\))|
 				(?:time:)?(?<Time1>\d{1,9}):(?<Time2>\d{1,9})(?::(?<Time3>\d{1,9}))?(?!\S)|
 				(?<Strikes>\d{1,9})X(?!\S)|
-				(?<Setting>strikes|needyactivationtime|widgets|nopacing|frontonly|factory|ruleseed)(?::(?<Value>[^\s)]*))?|
+				(?<Setting>strikes|needyactivationtime|widgets|nopacing|frontonly|factorymode|ruleseed)(?::(?<Value>[^\s)]*))?|
 				(?:(?<Count>\d{1,9})\s*[;*]\s*)?
 				(?:
 					(?<Open>\()|
@@ -71,15 +71,15 @@ namespace DynamicMissionGeneratorAssembly
 
 		private static readonly ModuleData[] factoryModeList = new[]
 		{
-			new ModuleData("static", "Factory: Static"),
-			new ModuleData("finite", "Factory: Finite"),
-			new ModuleData("finitegtime", "Factory: Finite + global time"),
-			new ModuleData("finitegstrikes", "Factory: Finite + global strikes"),
-			new ModuleData("finitegtimestrikes", "Factory: Finite + global time and strikes"),
-			new ModuleData("infinite", "Factory: Infinite"),
-			new ModuleData("infinitegtime", "Factory: Infinite + global time"),
-			new ModuleData("infinitegstrikes", "Factory: Infinite + global strikes"),
-			new ModuleData("infinitegtimestrikes", "Factory: Infinite + global time and strikes")
+			new ModuleData("static", "Factory mode: Static"),
+			new ModuleData("finite", "Factory mode: Finite"),
+			new ModuleData("finitegtime", "Factory mode: Finite + global time"),
+			new ModuleData("finitegstrikes", "Factory mode: Finite + global strikes"),
+			new ModuleData("finitegtimestrikes", "Factory mode: Finite + global time and strikes"),
+			new ModuleData("infinite", "Factory mode: Infinite"),
+			new ModuleData("infinitegtime", "Factory mode: Infinite + global time"),
+			new ModuleData("infinitegstrikes", "Factory mode: Infinite + global strikes"),
+			new ModuleData("infinitegtimestrikes", "Factory mode: Infinite + global time and strikes")
 		};
 
 		private static FieldInfo cursorVertsField = typeof(InputField).GetField("m_CursorVerts", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -419,7 +419,7 @@ namespace DynamicMissionGeneratorAssembly
 					}
 					else if (lastMatch.Groups["Setting"].Success)
 					{
-						if (lastMatch.Groups["Setting"].Value.Equals("factory", StringComparison.InvariantCultureIgnoreCase))
+						if (lastMatch.Groups["Setting"].Value.Equals("factorymode", StringComparison.InvariantCultureIgnoreCase))
 						{
 							if (factoryEnabled)
 							{
@@ -427,7 +427,7 @@ namespace DynamicMissionGeneratorAssembly
 								{
 									if (m.ModuleType.StartsWith(lastMatch.Groups["Value"].Value, StringComparison.InvariantCultureIgnoreCase))
 									{
-										var item = AddListItem("factory:" + m.ModuleType, m.DisplayName, true);
+										var item = AddListItem("factorymode:" + m.ModuleType, m.DisplayName, true);
 										item.HighlightID(0, lastMatch.Groups["Value"].Length + 8);
 									}
 								}
@@ -549,7 +549,7 @@ namespace DynamicMissionGeneratorAssembly
 			moduleData.Add(new ModuleData("widgets:", "[Set widget count]"));
 			moduleData.Add(new ModuleData("ruleseed:", "[Set rule seed]"));
 			moduleData.Add(new ModuleData("needyactivationtime:", "[Set needy activation time in seconds]"));
-			if (factoryEnabled) moduleData.Add(new ModuleData("factory:", "[Set Factory mode]"));
+			if (factoryEnabled) moduleData.Add(new ModuleData("factorymode:", "[Set Factory mode]"));
 			moduleData.Add(new ModuleData("Wires", "Wires"));
 			moduleData.Add(new ModuleData("Keypad", "Keypad"));
 			moduleData.Add(new ModuleData("Memory", "Memory"));
@@ -754,7 +754,7 @@ namespace DynamicMissionGeneratorAssembly
 							if (bombs != null && currentBomb != null) messages.Add("nopacing cannot be a bomb-level setting");
 							else mission.PacingEventsEnabled = false;
 							break;
-						case "factory":
+						case "factorymode":
 							if (bombs != null && currentBomb != null) messages.Add("Factory mode cannot be a bomb-level setting");
 							else if (factoryMode.HasValue) messages.Add("Factory mode specified multiple times");
 							else if (!factoryEnabled && !Application.isEditor) messages.Add("Factory does not seem to be enabled");

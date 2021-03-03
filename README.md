@@ -21,7 +21,7 @@ To start a mission, enter a mission string into the text box, then press Enter o
 * `widgets:[number]` – sets the number of random widgets. The default is 5.
 * `frontonly` – forces all modules to be on the face with the timer where possible.
 * `nopacing` – disables pacing events for the mission.
-* `factory:[mode]` – sets the [Factory](https://steamcommunity.com/sharedfiles/filedetails/?id=1307301431) mode for the mission. Valid modes are `static`, `finite`, `finitegtime`, `finitegstrikes`, `finitegtimestrikes`, `infinite`, `infinitegtime`, `infinitegstrikes`, `infinitegtimestrikes`
+* `factorymode:[mode]` – sets the [Factory](https://steamcommunity.com/sharedfiles/filedetails/?id=1307301431) mode for the mission. Valid modes are `static`, `finite`, `finitegtime`, `finitegstrikes`, `finitegtimestrikes`, `infinite`, `infinitegtime`, `infinitegstrikes`, `infinitegtimestrikes`
 
 To specify [multiple bombs](https://steamcommunity.com/sharedfiles/filedetails/?id=806104225), enclose each bomb description in parentheses. You can repeat a bomb configuration by providing `[number]*` before the `(`, and you can also specify bomb properties (time, strikes, needy activation time, widget count, front only) outside parentheses to apply them to all following bombs. Example: `5:00 2*(3*ALL_SOLVABLE) 3:00 (1X 3*ALL_SOLVABLE)`
 
